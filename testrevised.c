@@ -97,7 +97,8 @@ void menu() {
 		case 3:
 			printf("choice 3");break;
 		case 4:
-			printf("choice 4");break;
+			sensor();
+			break;
 		case 5:
 			printf("Exiting the program...\n");
 			password();
@@ -108,5 +109,5 @@ void menu() {
 
 
 main(){
-	sensor();
+	password();
 }
