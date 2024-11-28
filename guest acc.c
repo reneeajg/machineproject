@@ -1,8 +1,16 @@
 #include <stdio.h>
-#include <string.h>
-#include <unistd.h>
+#include <unistd.h>  // For sleep
 #define MAXCHAR 20
 #define MAXACCOUNTS 5
+
+// Custom string comparison function
+int compare_strings(const char *str1, const char *str2) {
+    while (*str1 && (*str1 == *str2)) {
+        str1++;
+        str2++;
+    }
+    return *(unsigned char *)str1 - *(unsigned char *)str2;
+}
 
 int main() {
     char users[MAXACCOUNTS][MAXCHAR];
@@ -35,7 +43,7 @@ int main() {
                     scanf("%d", &password);
 
                     for (i = 0; i < account_count; i++) {
-                        if (strcmp(users[i], username) == 0 && passwords[i] == password) {
+                        if (compare_strings(users[i], username) == 0 && passwords[i] == password) {
                             printf("\nLogin successful!\n");
                             printf("Welcome, %s!\n", username);
                             login_success = 1;
@@ -78,7 +86,7 @@ int main() {
                             scanf("%s", users[account_count]);
                             username_exists = 0;
                             for (i = 0; i < account_count; i++) {
-                                if (strcmp(users[account_count], users[i]) == 0) {
+                                if (compare_strings(users[account_count], users[i]) == 0) {
                                     username_exists = 1;
                                     break;
                                 }
@@ -167,4 +175,6 @@ int main() {
         }
     } while (!exit);
 }
+
+
 
