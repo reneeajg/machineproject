@@ -40,7 +40,7 @@ void userprofile(int *password){
 		printf("\nYou live in BLOCK %d, LOT %d, at %s STREET.\nContact no: %s\nAre the details correct? [Y/N]: ",block,lot,street,pnumber);
 		scanf(" %c", &ans);
 		
-		if (ans != 'Y' && ans != 'N')
+		if (ans != 'Y' && ans != 'N' && ans != 'y' && ans != 'n')
 			printf("Invalid input!");
 	}while(ans=='N' || ans=='n'); 
 	
