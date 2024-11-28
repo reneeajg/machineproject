@@ -30,14 +30,17 @@ void userprofile(int *password){
 		printf("\nPlease input your personal information:");
 		printf("\nEnter your username: ");
 		scanf("%s", name);
+		printf("Welcome, %s! Please input your profile details below.\n", name);
+		printf("ADDRESS\n");
 		block = numInput("block number");
 		lot = numInput("lot number");
 		printf("Enter your street: ");
 		scanf("%s", street);
+		printf("CONTACT INFORMATION\n");
 		printf("Enter your phone number +63: ");
 		scanf("%s", pnumber);
 		
-		printf("\nYou live in BLOCK %d, LOT %d, at %s STREET.\nContact no: %s\nAre the details correct? [Y/N]: ",block,lot,street,pnumber);
+		printf("\n%s, You live in BLOCK %d, LOT %d, at %s STREET.\nContact no: %s\nAre the details correct? [Y/N]: ",name,block,lot,street,pnumber);
 		scanf(" %c", &ans);
 		
 		if (ans != 'Y' && ans != 'N' && ans != 'y' && ans != 'n')
@@ -47,14 +50,13 @@ void userprofile(int *password){
 	if(ans=='Y'||ans=='y')
 		do{
 			printf("Details saved.");
-			printf(" Back to Menu? [Y/N]:");
+			printf(" Back to Menu? [Y/N]: ");
 			scanf(" %c", &ans2);
 		}while(ans2=='N' || ans2 == 'n');
 			if (ans2=='Y'|| ans2=='y')
 				admenu(password);
 				
-	//these details must be passed to the reports and 
-
+	//these details must be passed to the reports 
 }
 
 void adminlogin(int *password){
@@ -74,10 +76,10 @@ void adminlogin(int *password){
 					}while(Input1!=*password);
 					if(Input1 == *password)
 						admenu(password);
-					
 					break;
 			case 2: printf("Exiting the program...");
-					run = 0;
+					run = 0; break;
+			default: printf("Invalid input. Please try again.\n");
 		}
 	}
 }
@@ -124,7 +126,7 @@ void admenu(int *password) {
 					printf("Invalid choice. Try again.");
 			}while(choice1 != 1 && choice1 != 2);
 			switch(choice1){
-				case 1: userprofile(password); break;
+				case 1: userprofile(password);
 				case 2: changepassword(password);
 			}
 			break;
@@ -322,5 +324,4 @@ void sensorControlPanel() {
 int main(){
 	int password = 12345;
 	adminlogin(&password);
-	
 }
