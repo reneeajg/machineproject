@@ -1,9 +1,9 @@
 #include <stdio.h>
-#include <unistd.h>  // For sleep
+#include <unistd.h>  
 #define MAXCHAR 20
 #define MAXACCOUNTS 5
 
-// Custom string comparison function
+
 int compare_strings(const char *str1, const char *str2) {
     while (*str1 && (*str1 == *str2)) {
         str1++;
