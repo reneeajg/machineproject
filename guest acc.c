@@ -59,7 +59,7 @@ int main() {
                                 totaltime[i]--;
                             }
 
-                            printf("\nTime's up!\n");
+                            printf("\nTime's up, loging out...\n");
                             break;
                         }
                     }
