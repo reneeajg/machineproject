@@ -6,7 +6,6 @@ void admenu(int*);
 
 //sensors
 #define SENSORS 5
-int sensorStatus[SENSORS];  
 void sensorManager(int sensorNum, int activity);
 void sensorCalibration();
 void sensorControlPanel();
