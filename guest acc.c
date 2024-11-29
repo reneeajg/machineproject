@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <unistd.h>  
+#include <unistd.h>  //sleep function
 #define MAXCHAR 20
 #define MAXACCOUNTS 5
 
@@ -55,7 +55,7 @@ int main() {
                                 int display_seconds = totaltime[i] % 60;
                                 printf("\rTime Left: %02d:%02d:%02d", display_hours, display_minutes, display_seconds);
                                 fflush(stdout);
-                                sleep(1);
+                                sleep(1); //delay operation by 1 second
                                 totaltime[i]--;
                             }
 
