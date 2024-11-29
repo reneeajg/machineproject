@@ -150,7 +150,6 @@ void admenu(int *password) {
 void sensorManager(int sensorNum, int activity){
 	if (sensorNum < 0 || sensorNum >= SENSORS ){
 		printf("Error: Invalid Sensor Number!");
-		return;
 	}
 	
 	if(activity == 1 && sensorStatus[sensorNum] == 0){
