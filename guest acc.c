@@ -75,8 +75,9 @@ int main() {
             case 2: // Create Guest Account
                 do {
                     printf("\nGuest Account Creation Program\n");
+                    int continue_creating = 1;
 
-                    while (account_count < MAXACCOUNTS) {
+                    while (account_count < MAXACCOUNTS && continue_creating) {
                         printf("\nCreating Account %d of %d:\n", account_count + 1, MAXACCOUNTS);
 
                         int username_exists = 0;
@@ -128,7 +129,7 @@ int main() {
                                     } else {
                                         printf("Invalid! You can only add up to 59 minutes.\n");
                                     }
-                                } while (valid_time!=1 && minutes[account_count] >= 0 && minutes[account_count] <= 59);
+                                } while (valid_time != 1 && minutes[account_count] >= 0 && minutes[account_count] <= 59);
                             } else {
                                 printf("Invalid! Hours cannot be negative.\n");
                             }
@@ -149,7 +150,7 @@ int main() {
                             printf("\nDo you want to create another account? [Y/B (Back)]: ");
                             scanf(" %c", &choice);
                             if (choice == 'B' || choice == 'b') {
-                                break;
+                                continue_creating = 0;
                             }
                         }
                     }
