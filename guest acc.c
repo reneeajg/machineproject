@@ -1,9 +1,9 @@
 #include <stdio.h>
-#include <unistd.h>  //sleep function
-#define MAXCHAR 20
-#define MAXACCOUNTS 5
+#include <unistd.h>  // For sleep
+#define MAXCHAR 20       // Maximum character length for usernames
+#define MAXACCOUNTS 5    // Maximum number of accounts allowed
 
-
+// Custom string comparison function to replace strcmp
 int compare_strings(const char *str1, const char *str2) {
     while (*str1 && (*str1 == *str2)) {
         str1++;
@@ -27,79 +27,77 @@ int main() {
         scanf("%d", &menu_choice);
 
         switch (menu_choice) {
-            case 1:
+            case 1: // Guest Login
                 if (account_count == 0) {
                     printf("\nNo accounts available. Please create an account first.\n");
-                    break;
-                }
-                do {
-                    char username[MAXCHAR];
-                    int password, login_success = 0;
+                } else {
+                    do {
+                        char username[MAXCHAR];
+                        int password, login_success = 0;
 
-                    printf("\nGUEST LOGIN\n");
-                    printf("\nEnter your username: ");
-                    scanf("%s", username);
-                    printf("Enter your password: ");
-                    scanf("%d", &password);
+                        printf("\nGUEST LOGIN\n");
+                        printf("Enter your username: ");
+                        scanf("%s", username);
+                        printf("Enter your password: ");
+                        scanf("%d", &password);
 
-                    for (i = 0; i < account_count; i++) {
-                        if (compare_strings(users[i], username) == 0 && passwords[i] == password) {
-                            printf("\nLogin successful!\n");
-                            printf("Welcome, %s!\n", username);
-                            login_success = 1;
+                        for (i = 0; i < account_count && !login_success; i++) {
+                            if (compare_strings(users[i], username) == 0 && passwords[i] == password) {
+                                printf("\nLogin successful!\nWelcome, %s!\n", username);
+                                login_success = 1;
 
-                            printf("Starting your allotted time countdown...\n");
-                            while (totaltime[i] > 0) {
-                                int display_hours = totaltime[i] / 3600;
-                                int display_minutes = (totaltime[i] % 3600) / 60;
-                                int display_seconds = totaltime[i] % 60;
-                                printf("\rTime Left: %02d:%02d:%02d", display_hours, display_minutes, display_seconds);
-                                fflush(stdout);
-                                sleep(1); //delay operation by 1 second
-                                totaltime[i]--;
+                                printf("Starting your allotted time countdown...\n");
+                                while (totaltime[i] > 0) {
+                                    int display_hours = totaltime[i] / 3600;
+                                    int display_minutes = (totaltime[i] % 3600) / 60;
+                                    int display_seconds = totaltime[i] % 60;
+                                    printf("\rTime Left: %02d:%02d:%02d", display_hours, display_minutes, display_seconds);
+                                    fflush(stdout);
+                                    sleep(1);
+                                    totaltime[i]--;
+                                }
+
+                                printf("\nTime's up!\n");
                             }
-
-                            printf("\nTime's up, loging out...\n");
-                            break;
                         }
-                    }
 
-                    if (!login_success) {
-                        printf("\nInvalid username or password. Please try again.\n");
-                        printf("Enter 'B' to go back to the main menu or 'R' to retry login: ");
-                        scanf(" %c", &back_choice);
-                    } else {
-                        back_choice = 'B';
-                    }
-                } while (back_choice != 'B' && back_choice != 'b');
+                        if (!login_success) {
+                            printf("\nInvalid username or password. Please try again.\n");
+                            printf("Enter 'B' to go back to the main menu or 'R' to retry login: ");
+                            scanf(" %c", &back_choice);
+                        } else {
+                            back_choice = 'B';
+                        }
+                    } while (back_choice != 'B' && back_choice != 'b');
+                }
                 break;
 
-            case 2:
+            case 2: // Create Guest Account
                 do {
                     printf("\nGuest Account Creation Program\n");
 
                     while (account_count < MAXACCOUNTS) {
                         printf("\nCreating Account %d of %d:\n", account_count + 1, MAXACCOUNTS);
-                        int username_exists;
+
+                        int username_exists = 0;
                         do {
                             printf("Set Username: ");
                             scanf("%s", users[account_count]);
+
                             username_exists = 0;
                             for (i = 0; i < account_count; i++) {
                                 if (compare_strings(users[account_count], users[i]) == 0) {
                                     username_exists = 1;
-                                    break;
+                                    printf("Username already taken! Please choose a different username.\n");
                                 }
-                            }
-                            if (username_exists) {
-                                printf("Username already taken! Please choose a different username.\n");
                             }
                         } while (username_exists);
 
-                        int password_exists;
+                        int password_exists = 0;
                         do {
                             printf("Set a 5-digit Password: ");
                             scanf("%d", &passwords[account_count]);
+
                             if (passwords[account_count] < 10000 || passwords[account_count] > 99999) {
                                 printf("\nInvalid password! Please enter a valid 5-digit password.\n");
                             } else {
@@ -107,33 +105,34 @@ int main() {
                                 for (i = 0; i < account_count; i++) {
                                     if (passwords[account_count] == passwords[i]) {
                                         password_exists = 1;
-                                        break;
+                                        printf("Password already taken! Please choose a different password.\n");
                                     }
-                                }
-                                if (password_exists) {
-                                    printf("Password already taken! Please choose a different password.\n");
                                 }
                             }
                         } while (passwords[account_count] < 10000 || passwords[account_count] > 99999 || password_exists);
 
+                        int valid_time = 0;
                         do {
                             printf("Set Time - Hours: ");
                             scanf("%d", &hours[account_count]);
-                            if (hours[account_count] < 0) {
+                            if (hours[account_count] >= 0) {
+                                do {
+                                    printf("Set Time - Minutes: ");
+                                    scanf("%d", &minutes[account_count]);
+                                    if (minutes[account_count] >= 0 && minutes[account_count] <= 59) {
+                                        if (hours[account_count] > 0 || minutes[account_count] > 0) {
+                                            valid_time = 1;
+                                        } else {
+                                            printf("Invalid! Time cannot be 00:00. Please enter a valid time.\n");
+                                        }
+                                    } else {
+                                        printf("Invalid! You can only add up to 59 minutes.\n");
+                                    }
+                                } while (valid_time!=1 && minutes[account_count] >= 0 && minutes[account_count] <= 59);
+                            } else {
                                 printf("Invalid! Hours cannot be negative.\n");
-                                continue;
                             }
-                            do {
-                                printf("Set Time - Minutes: ");
-                                scanf("%d", &minutes[account_count]);
-                                if (minutes[account_count] < 0 || minutes[account_count] > 59) {
-                                    printf("Invalid! You can only add up to 59 minutes.\n");
-                                }
-                            } while (minutes[account_count] < 0 || minutes[account_count] > 59);
-                            if (hours[account_count] == 0 && minutes[account_count] == 0) {
-                                printf("Invalid! Time cannot be 00:00. Please enter a valid time.\n");
-                            }
-                        } while (hours[account_count] == 0 && minutes[account_count] == 0);
+                        } while (valid_time != 1);
 
                         totaltime[account_count] = (hours[account_count] * 3600) + (minutes[account_count] * 60);
 
@@ -173,7 +172,7 @@ int main() {
             default:
                 printf("Invalid choice! Please try again.\n");
         }
-    } while (!exit);
+    } while (exit != 1);
 }
 
 
